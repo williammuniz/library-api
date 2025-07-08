@@ -9,7 +9,7 @@
 
 ## Descrição
 
-Esta é uma API RESTful desenvolvida com **Spring Boot** e **Java 23**, que serve como backend para o cadastro e gerenciamento de clientes de uma petshop. A API oferece funcionalidades para autenticação, cadastro de usuários e operações CRUD (Create, Read, Update, Delete) para o gerenciamento de clientes.
+Esta é uma API RESTful desenvolvida com **Spring Boot** e **Java 24**, que serve como backend para o cadastro e gerenciamento de clientes de uma livraria. A API oferece funcionalidades para autenticação, cadastro de usuários e operações CRUD (Create, Read, Update, Delete) para o gerenciamento de clientes.
 
 Além disso, a API gera um token de autenticação JWT (JSON Web Token), que é válido por 12 horas, sendo recomendado armazená-lo de forma segura.
 
