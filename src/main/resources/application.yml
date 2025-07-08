@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: estudojpa
+  datasource:
+    url: jdbc:postgresql://localhost:5431/library
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+server:
+  port: 8081
+
