@@ -6,6 +6,7 @@ import com.library.library.service.AutorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -22,6 +23,7 @@ public class AutorController implements GenericController {
     private final AutorService service;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> salvar(@RequestBody @Valid AutorDTO dto) {
         Autor autor = dto.toEntity();
         service.salvar(autor);
@@ -32,6 +34,7 @@ public class AutorController implements GenericController {
     }
 
     @GetMapping("{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AutorDTO> findById(@PathVariable("id") String id) {
         UUID uuid = UUID.fromString(id);
         Optional<Autor> optional = service.findById(uuid);
@@ -44,6 +47,7 @@ public class AutorController implements GenericController {
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deletar(@PathVariable("id") String id) {
         UUID uuid = UUID.fromString(id);
         Optional<Autor> optional = service.findById(uuid);
@@ -56,6 +60,7 @@ public class AutorController implements GenericController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<List<AutorDTO>> pesquisar(@RequestParam(value = "nome", required = false) String nome,
                                                     @RequestParam(value = "nacionalidade", required = false) String nacionalidade) {
         List<Autor> autores = service.pesquisaByExample(nome, nacionalidade);
