@@ -1,16 +1,12 @@
 package com.library.library.controller;
 
 import com.library.library.dto.AutorDTO;
-import com.library.library.dto.ErroResposta;
-import com.library.library.exceptions.OperacaoNaoPermitidaException;
-import com.library.library.exceptions.RegistroDuplicadoException;
 import com.library.library.model.Autor;
 import com.library.library.service.AutorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
