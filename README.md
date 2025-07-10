@@ -16,7 +16,7 @@ Além disso, a API gera um token de autenticação JWT (JSON Web Token), que é 
 ## Tecnologias Utilizadas
 
 - **Java 23**
-- **Spring Boot 3.4.2**
+- **Spring Boot 3.5.3**
 - **Spring Security** (para autenticação e autorização)
 - **JPA (Java Persistence API)** com **PostgreSQL** para persistência de dados
 - **Swagger OpenAPI** para documentação da API
