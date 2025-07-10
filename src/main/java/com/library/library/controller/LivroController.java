@@ -1,10 +1,8 @@
 package com.library.library.controller;
 
-import com.library.library.dto.AutorDTO;
 import com.library.library.dto.CadastroLivroDTO;
 import com.library.library.dto.ResultadoPesquisaLivroDTO;
 import com.library.library.enums.GeneroLivro;
-import com.library.library.model.Autor;
 import com.library.library.model.Livro;
 import com.library.library.service.LivroService;
 import jakarta.validation.Valid;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/livros")
@@ -70,8 +67,7 @@ public class LivroController implements GenericController {
                                                                      @RequestParam(value = "titulo", required = false) String titulo,
                                                                      @RequestParam(value = "genero", required = false) String genero,
                                                                      @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
-                                                                     @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize
-    ) {
+                                                                     @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize) {
         Page<Livro> livros = service.pesquisar(isbn, titulo, genero != null ? GeneroLivro.valueOf(genero) : null, page, pageSize);
         Page<ResultadoPesquisaLivroDTO> dtos = livros.map(ResultadoPesquisaLivroDTO::toDTO);
         return ResponseEntity.ok(dtos);
