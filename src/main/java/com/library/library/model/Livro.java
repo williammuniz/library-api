@@ -53,4 +53,8 @@ public class Livro {
     @Column(name = "data_atualizacao")
     private LocalDateTime dataAtualizacao;
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", foreignKey = @ForeignKey(name = "fk_autor_usuario"))
+    private Usuario usuario;
+
 }

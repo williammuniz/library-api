@@ -7,6 +7,7 @@ import com.library.library.model.Autor;
 import com.library.library.model.Livro;
 import com.library.library.repository.AutorRepository;
 import com.library.library.repository.LivroRepository;
+import com.library.library.security.SecurityService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
@@ -23,13 +24,14 @@ public class LivroService {
 
     private final LivroRepository repository;
     private final AutorRepository autorRepository;
+    private final SecurityService securityService;
 
     public Livro salvar(CadastroLivroDTO dto) {
         Autor autor = autorRepository.findById(dto.idAutor())
                 .orElseThrow(() -> new EntityNotFoundException("Autor não encontrado com ID: " + dto.idAutor()));
 
         Livro livro = toEntity(dto, autor);
-
+        livro.setUsuario(securityService.obterUsuarioLogao());
         return repository.save(livro);
     }
 
