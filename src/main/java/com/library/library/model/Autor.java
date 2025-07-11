@@ -1,7 +1,10 @@
 package com.library.library.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -46,7 +49,7 @@ public class Autor {
     @Builder.Default
     private List<Livro> livros = new ArrayList<>();
 
-
-
-
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", foreignKey = @ForeignKey(name = "fk_autor_usuario"))
+    private Usuario usuario;
 }

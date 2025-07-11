@@ -2,8 +2,10 @@ package com.library.library.service;
 
 import com.library.library.exceptions.OperacaoNaoPermitidaException;
 import com.library.library.model.Autor;
+import com.library.library.model.Usuario;
 import com.library.library.repository.AutorRepository;
 import com.library.library.repository.LivroRepository;
+import com.library.library.security.SecurityService;
 import com.library.library.validator.AutorValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
@@ -21,9 +23,11 @@ public class AutorService {
     private final AutorRepository repository;
     private final AutorValidator validator;
     private final LivroRepository livroRepository;
+    private final SecurityService securityService;
 
     public void salvar(Autor autor) {
         validator.validar(autor);
+        autor.setUsuario( securityService.obterUsuarioLogao());
         repository.save(autor);
     }
 

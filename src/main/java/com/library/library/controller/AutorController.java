@@ -3,6 +3,7 @@ package com.library.library.controller;
 import com.library.library.dto.AutorDTO;
 import com.library.library.model.Autor;
 import com.library.library.service.AutorService;
+import com.library.library.service.UsuarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
