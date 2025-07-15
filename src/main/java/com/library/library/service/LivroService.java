@@ -31,7 +31,7 @@ public class LivroService {
                 .orElseThrow(() -> new EntityNotFoundException("Autor não encontrado com ID: " + dto.idAutor()));
 
         Livro livro = toEntity(dto, autor);
-        livro.setUsuario(securityService.obterUsuarioLogao());
+        livro.setUsuario(securityService.obterUsuarioLogado());
         return repository.save(livro);
     }
 

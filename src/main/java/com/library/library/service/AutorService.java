@@ -27,7 +27,7 @@ public class AutorService {
 
     public void salvar(Autor autor) {
         validator.validar(autor);
-        autor.setUsuario( securityService.obterUsuarioLogao());
+        autor.setUsuario( securityService.obterUsuarioLogado());
         repository.save(autor);
     }
 

@@ -23,11 +23,16 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
     @Column(nullable = false)
     @NotNull
     private String login;
+
     @Column(nullable = false)
     private String senha;
+
+    @Column
+    private String email;
 
     @Type(ListArrayType.class)
     @Builder.Default

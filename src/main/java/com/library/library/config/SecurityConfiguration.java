@@ -1,6 +1,7 @@
 package com.library.library.config;
 
 import com.library.library.security.CustomUserDetailsService;
+import com.library.library.security.LoginSocialSucessHandler;
 import com.library.library.service.UsuarioService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,11 +19,12 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true) // para habilitar segurança por roles direto nos endpoint
+@EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
+// para habilitar segurança por roles direto nos endpoint
 public class SecurityConfiguration {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, LoginSocialSucessHandler loginSocialSucessHandler) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
@@ -34,6 +37,11 @@ public class SecurityConfiguration {
 
                     authorize.anyRequest().authenticated();
                 })
+                .oauth2Login(oauth2 -> {
+                    oauth2
+                            .loginPage("/login")
+                            .successHandler(loginSocialSucessHandler);
+                })
                 .build();
     }
 
@@ -42,7 +50,7 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder(10);
     }
 
-    @Bean
+    //    @Bean
     public UserDetailsService userDetailsService(UsuarioService usuarioService) {
 //        UserDetails user1 = User
 //                .builder()
@@ -58,5 +66,10 @@ public class SecurityConfiguration {
 //                .build();
 //        return new InMemoryUserDetailsManager(user1, user2);
         return new CustomUserDetailsService(usuarioService);
+    }
+
+    @Bean
+    public GrantedAuthorityDefaults grantedAuthorityDefaults() {
+        return new GrantedAuthorityDefaults("");
     }
 }
