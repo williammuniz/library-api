@@ -1,6 +1,9 @@
 spring:
   application:
     name: estudojpa
+  output:
+    ansi:
+      enabled : ALWAYS
   datasource:
     url: jdbc:postgresql://localhost:5431/library
     username: postgres
@@ -16,6 +19,18 @@ spring:
           google:
             client-id: ${GOOGLE_CLIENT_ID}
             client-secret: ${GOOGLE_CLIENT_SECRET}
+logging:
+  file:
+    name: app.log
+  level:
+    root: warn
+    com:
+      library:
+        library: trace
+    org:
+      springframework:
+        web: debug
+        security : trace
 
 server:
   port: 8081
