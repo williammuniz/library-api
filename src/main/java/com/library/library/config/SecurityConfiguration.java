@@ -10,6 +10,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -46,12 +47,24 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(10);
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring().requestMatchers(
+                "/v2/api-docs/**",
+                "/v3/api-docs/**",
+                "/swagger-resources/**",
+                "/swagger-ui.html/**",
+                "/swagger-ui/**",
+                "/webjars/**"
+        );
     }
 
-    //    @Bean
-    public UserDetailsService userDetailsService(UsuarioService usuarioService) {
+@Bean
+public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder(10);
+}
+
+//    @Bean
+public UserDetailsService userDetailsService(UsuarioService usuarioService) {
 //        UserDetails user1 = User
 //                .builder()
 //                .username("usuario")
@@ -65,11 +78,11 @@ public class SecurityConfiguration {
 //                .roles("ADMIN")
 //                .build();
 //        return new InMemoryUserDetailsManager(user1, user2);
-        return new CustomUserDetailsService(usuarioService);
-    }
+    return new CustomUserDetailsService(usuarioService);
+}
 
-    @Bean
-    public GrantedAuthorityDefaults grantedAuthorityDefaults() {
-        return new GrantedAuthorityDefaults("");
-    }
+@Bean
+public GrantedAuthorityDefaults grantedAuthorityDefaults() {
+    return new GrantedAuthorityDefaults("");
+}
 }

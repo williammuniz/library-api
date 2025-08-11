@@ -3,7 +3,10 @@ package com.library.library.controller;
 import com.library.library.dto.AutorDTO;
 import com.library.library.model.Autor;
 import com.library.library.service.AutorService;
-import com.library.library.service.UsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +22,19 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/autores")
 @RequiredArgsConstructor
+@Tag(name="Autores")
 public class AutorController implements GenericController {
 
     private final AutorService service;
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Salvar", description = "Cadastrar novo Autor")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Cadastrado com sucesso."),
+            @ApiResponse(responseCode = "422", description = "Erro de validação."),
+            @ApiResponse(responseCode = "409", description = "Autor já cadastrado.")
+    })
     public ResponseEntity<?> salvar(@RequestBody @Valid AutorDTO dto) {
         Autor autor = dto.toEntity();
         service.salvar(autor);
@@ -36,6 +46,11 @@ public class AutorController implements GenericController {
 
     @GetMapping("{id}")
     @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Obter detalhes", description = "Retorna os dados do autor pelo ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Autor encontrado."),
+            @ApiResponse(responseCode = "404", description = "Autor não encontrado.")
+    })
     public ResponseEntity<AutorDTO> findById(@PathVariable("id") String id) {
         UUID uuid = UUID.fromString(id);
         Optional<Autor> optional = service.findById(uuid);
@@ -49,6 +64,12 @@ public class AutorController implements GenericController {
 
     @DeleteMapping("{id}")
     @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Deletar", description = "Deleta um autor existente")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Deletado com sucesso."),
+            @ApiResponse(responseCode = "404", description = "Autor não encontrado."),
+            @ApiResponse(responseCode = "400", description = "Autor possuí livro cadastrado.."),
+    })
     public ResponseEntity<?> deletar(@PathVariable("id") String id) {
         UUID uuid = UUID.fromString(id);
         Optional<Autor> optional = service.findById(uuid);
@@ -62,6 +83,10 @@ public class AutorController implements GenericController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    @Operation(summary = "Pesquisar", description = "Realiza pesquisa de autores por parametros")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sucesso."),
+    })
     public ResponseEntity<List<AutorDTO>> pesquisar(@RequestParam(value = "nome", required = false) String nome,
                                                     @RequestParam(value = "nacionalidade", required = false) String nacionalidade) {
         List<Autor> autores = service.pesquisaByExample(nome, nacionalidade);
@@ -73,6 +98,12 @@ public class AutorController implements GenericController {
     }
 
     @PutMapping("{id}")
+    @Operation(summary = "Atualizar", description = "Atualiza de autores por parametros")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Atualizado com sucesso."),
+            @ApiResponse(responseCode = "404", description = "Autor não encontrado."),
+            @ApiResponse(responseCode = "409", description = "Autor já cadastrado.")
+    })
     public ResponseEntity<?> atualizar(@PathVariable("id") String id, @RequestBody @Valid AutorDTO dto) {
         UUID uuid = UUID.fromString(id);
         Optional<Autor> autor = service.findById(uuid);
