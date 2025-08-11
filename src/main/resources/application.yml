@@ -32,6 +32,14 @@ logging:
         web: debug
         security : trace
 
+management:
+  server:
+    port: 9090
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
 server:
   port: 8081
 
