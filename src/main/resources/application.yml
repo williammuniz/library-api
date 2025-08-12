@@ -1,17 +1,21 @@
 spring:
   application:
-    name: estudojpa
+    name: libraryapi
+#  profiles:
+#    active: production
+#  S´RING_PROFILES_ACTIVE=production
   output:
     ansi:
       enabled : ALWAYS
   datasource:
-    url: jdbc:postgresql://localhost:5431/library
-    username: postgres
-    password: postgres
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5431/library}
+    username: ${DATASOURCE_USERNAME:postgres}
+    password:  ${DATASOURCE_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update
+    show-sql: true
   security:
     oauth2:
       client:
@@ -42,4 +46,13 @@ management:
 
 server:
   port: 8081
+
+#production
+---
+spring:
+  config:
+    activate:
+      on-profile: production, homologacao
+  jpa:
+    show-sql: false
 
